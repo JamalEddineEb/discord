@@ -4,4 +4,4 @@ discord.py
 httpx
 openai
 pyyaml
-
+aiosqlite
