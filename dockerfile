@@ -11,11 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the bot script into the container
-COPY bot.py .
-
-# Set environment variables for Discord token and Groq API key
-ENV DISCORD_TOKEN=your_discord_bot_token_here
-ENV GROQ_API_KEY=your_groq_api_key_here
+COPY . .
 
 # Run the bot script when the container starts
 CMD ["python", "bot.py"]
