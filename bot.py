@@ -110,7 +110,7 @@ async def on_message(new_msg):
 
     # Send request to the API via httpx (no wrapper)
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=50) as client:
             response = await client.post(
                 f"{base_url}/chat/completions",
                 headers={"Authorization": f"Bearer {api_key}"},
