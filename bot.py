@@ -4,7 +4,8 @@ from dataclasses import dataclass, field
 from datetime import datetime as dt
 import logging
 from typing import Literal, Optional
-from memory import get_user_memory, update_user_memory,init_db
+from rag import fetch_past_vectors
+from memory import update_user_memory,init_db
 
 import discord
 import httpx
@@ -90,13 +91,16 @@ async def on_message(new_msg):
     user_message = new_msg.content.removeprefix(discord_client.user.mention).strip()
 
     # Load user memory (past messages + personality)
-    personality, past_messages = await get_user_memory(user_id)
+    relevant_messages = await fetch_past_vectors(user_message)
 
     # Build conversation history
-    messages = [{"role": "system", "content": f"You are {personality} and remember past conversations."}]
-    for msg in past_messages[-5:]:  # Keep last 5 messages for context
-        messages.append({"role": "user", "content": msg})
-    messages.append({"role": "user", "content": user_message})
+    messages = [{"role": "system", "content": f"You are our mate and remember past conversations, but you don't make them up. You have memory, so act like a real friend. \
+                    Avoid looking like an AI, no one should think you are an AI."}]
+
+    for msg in relevant_messages:
+        messages.append({"role": "user", "content": f"{user_id}: {msg['content']}"})  # Keep the original sender
+
+    messages.append({"role": "user", "content": f"{user_id}: {user_message}"})
 
     print(messages)
     # Get API provider and model info

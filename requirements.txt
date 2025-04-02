@@ -5,3 +5,6 @@ httpx
 openai
 pyyaml
 aiosqlite
+faiss-cpu
+sentence_transformers
+numpy

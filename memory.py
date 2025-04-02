@@ -30,7 +30,7 @@ async def update_user_memory(user_id, username, message):
 
         # Add the new message (limit history to avoid bloat)
         messages.append(message)
-        messages = messages[-50:]
+        messages = messages[-200:]
 
         if row:
             await db.execute("UPDATE users SET messages = ? WHERE user_id = ?", (json.dumps(messages), user_id))
@@ -40,9 +40,10 @@ async def update_user_memory(user_id, username, message):
 
         await db.commit()
 
-async def get_user_memory(user_id):
+
+async def get_conversation_memory():
     async with aiosqlite.connect(DB_FILE) as db:
-        cursor = await db.execute("SELECT personality, messages FROM users WHERE user_id = ?", (user_id,))
+        cursor = await db.execute("SELECT personality, messages FROM users")
         row = await cursor.fetchone()
 
         if row:
@@ -54,4 +55,3 @@ async def get_user_memory(user_id):
             print(messages)
 
     return personality, messages
-
