@@ -30,7 +30,6 @@ async def update_user_memory(user_id, username, message):
 
         # Add the new message (limit history to avoid bloat)
         messages.append(message)
-        messages = messages[-200:]
 
         if row:
             await db.execute("UPDATE users SET messages = ? WHERE user_id = ?", (json.dumps(messages), user_id))
