@@ -28,6 +28,8 @@ async def update_user_memory(user_id, username, message):
         else:
             messages = []
 
+        message = f'{username} : {message}'
+
         # Add the new message (limit history to avoid bloat)
         messages.append(message)
 

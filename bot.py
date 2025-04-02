@@ -90,7 +90,7 @@ async def on_message(new_msg):
     username = new_msg.author.name
     user_message = new_msg.content.removeprefix(discord_client.user.mention).strip()
 
-    # Load user memory (past messages + personality)
+    # Load memory 
     relevant_messages = await fetch_past_vectors(user_message)
 
     # Build conversation history
@@ -100,7 +100,7 @@ async def on_message(new_msg):
                     Avoid looking like an AI, no one should think you are an AI."}]
 
     for msg in relevant_messages:
-        messages.append({"role": "user", "content": f"{username}: {msg['content']}"})  # Keep the original sender
+        messages.append({"role": "user", "content": f"{msg['content']}"})  # Keep the original sender
 
     messages.append({"role": "user", "content": f"{username}: {user_message}"})
 
