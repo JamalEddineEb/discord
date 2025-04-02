@@ -98,9 +98,9 @@ async def on_message(new_msg):
                     Avoid looking like an AI, no one should think you are an AI."}]
 
     for msg in relevant_messages:
-        messages.append({"role": "user", "content": f"{user_id}: {msg['content']}"})  # Keep the original sender
+        messages.append({"role": "user", "content": f"{username}: {msg['content']}"})  # Keep the original sender
 
-    messages.append({"role": "user", "content": f"{user_id}: {user_message}"})
+    messages.append({"role": "user", "content": f"{username}: {user_message}"})
 
     print(messages)
     # Get API provider and model info
