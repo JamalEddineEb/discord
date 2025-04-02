@@ -36,7 +36,7 @@ async def fetch_past_vectors(new_message):
         new_vector = model.encode([new_message])
 
         # Search for 5 closest messages
-        _, indices = index.search(new_vector, 5)
+        _, indices = index.search(new_vector, 10)
 
         # Retrieve relevant messages
         relevant_messages = [messages[i] for i in indices[0] if i < len(messages)]
