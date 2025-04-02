@@ -51,6 +51,7 @@ async def get_user_memory(user_id):
         else:
             personality = "friendly"
             messages = []
+            print(messages)
 
     return personality, messages
 
