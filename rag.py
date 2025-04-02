@@ -5,8 +5,8 @@ import faiss
 from sentence_transformers import SentenceTransformer
 
 DB_FILE = "server_memory.db"
-model = SentenceTransformer("all-MiniLM-L6-v2")
-index = faiss.IndexFlatL2(384)  # Vector size for MiniLM
+model = SentenceTransformer("all-mpnet-base-v2")
+index = faiss.IndexFlatL2(768)  # Vector size for MiniLM
 
 async def fetch_past_vectors(new_message):
     async with aiosqlite.connect(DB_FILE) as db:
