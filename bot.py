@@ -31,7 +31,7 @@ MAX_MESSAGE_NODES = 100
 
 def remove_thinking_tags(response):
     # Remove <thinking> tags and their content
-    response = re.sub(r'<thinking>.*?</thinking>', '', response, flags=re.DOTALL)
+    response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
     
     # Optionally, remove any leading or trailing whitespace
     response = response.strip()
@@ -96,6 +96,7 @@ async def on_message(new_msg):
     # Build conversation history
     messages = [{"role": "system", "content": f"You are our mate and remember past conversations, but you don't make them up. You have memory,\
                   so act like a real friend. \
+                 don't be so polite \
                  only the last message is important, other messages are just your memory, you don't have to mention them each time\
                     Avoid looking like an AI, no one should think you are an AI."}]
 
