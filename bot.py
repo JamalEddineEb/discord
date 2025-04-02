@@ -94,7 +94,9 @@ async def on_message(new_msg):
     relevant_messages = await fetch_past_vectors(user_message)
 
     # Build conversation history
-    messages = [{"role": "system", "content": f"You are our mate and remember past conversations, but you don't make them up. You have memory, so act like a real friend. \
+    messages = [{"role": "system", "content": f"You are our mate and remember past conversations, but you don't make them up. You have memory,\
+                  so act like a real friend. \
+                 only the last message is important, other messages are just your memory, you don't have to mention them each time\
                     Avoid looking like an AI, no one should think you are an AI."}]
 
     for msg in relevant_messages:
