@@ -8,7 +8,7 @@ DB_FILE = "server_memory.db"
 model = SentenceTransformer("all-mpnet-base-v2")
 index = faiss.IndexFlatL2(768)  # Vector size for MiniLM
 
-async def fetch_past_vectors(new_message):
+async def fetch_past_vectors(new_message,num_recent=5):
     async with aiosqlite.connect(DB_FILE) as db:
         cursor = await db.execute("SELECT user_id, messages FROM users")
         rows = await cursor.fetchall()
@@ -24,6 +24,8 @@ async def fetch_past_vectors(new_message):
 
         if not messages:
             return "friendly", []
+        
+        recent_messages = messages[-num_recent:]
 
         # Encode stored messages into vectors
         stored_vectors = model.encode([msg["content"] for msg in messages])
@@ -41,4 +43,4 @@ async def fetch_past_vectors(new_message):
         # Retrieve relevant messages
         relevant_messages = [messages[i] for i in indices[0] if i < len(messages)]
 
-    return relevant_messages
+    return relevant_messages,recent_messages

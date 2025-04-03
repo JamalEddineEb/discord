@@ -91,19 +91,29 @@ async def on_message(new_msg):
     user_message = new_msg.content.removeprefix(discord_client.user.mention).strip()
 
     # Load memory 
-    relevant_messages = await fetch_past_vectors(user_message)
+    relevant_messages,recent_messages = await fetch_past_vectors(user_message)
 
     # Build conversation history
-    messages = [{"role": "system", "content": f"You are our mate and remember past conversations, but you don't make them up. You have memory,\
-                  so act like a real friend. \
-                 don't be so polite \
-                 only the last message is important, other messages are just your memory, you don't have to mention them each time\
-                    Avoid looking like an AI, no one should think you are an AI."}]
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are El Metalico, a real friend, not an AI. You remember past conversations, but you never make things up. "
+                "You're casual and direct, not overly polite. Only the last message matters for response; past messages are just memory. "
+                "Messages follow this format: 'username: message'. You use the username to track who said what, but you never mention it in your replies. "
+                "you have the last 5 messages for short memory followup and the first 5 other messages for you long term memory"
+                "Your goal is to be a natural, real friend who keeps the conversation flowing."
+            ),
+        }
+    ]
+
+    for msg in recent_messages:
+        messages.append({"role": "user", "content": f'(recent) {msg}'})
 
     for msg in relevant_messages:
-        messages.append({"role": "user", "content": f"{msg}"})  # Keep the original sender
+        messages.append({"role": "user", "content": f'(context) {msg}' })  
 
-    messages.append({"role": "user", "content": f"{username}: {user_message}"})
+    messages.append({"role": "user", "content": f"(latest) {username}: {user_message}"})
 
     print(messages)
     # Get API provider and model info
@@ -120,7 +130,7 @@ async def on_message(new_msg):
                 json={
                     "model": model,
                     "messages": messages,
-                    "max_tokens": cfg.get("max_tokens", 2000),
+                    "max_tokens": cfg.get("max_tokens", 4000),
                     "temperature": cfg.get("temperature", 0.7),
                 },
             )
