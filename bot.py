@@ -151,7 +151,6 @@ async def on_message(new_msg):
 
         # Update and save user memory
         await update_user_memory(user_id, username, user_message)
-        await update_user_memory('you', 'EL METALICO', user_message)
 
     except httpx.HTTPStatusError as e:
         logging.error(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")

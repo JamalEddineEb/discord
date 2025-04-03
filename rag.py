@@ -29,7 +29,6 @@ async def fetch_past_vectors(new_message,num_recent=10):
 
         # Encode stored messages into vectors
         stored_vectors = model.encode([msg["content"] for msg in messages])
-        print(msg["content"])
 
         # Reset FAISS index to avoid duplicate data
         index.reset()
