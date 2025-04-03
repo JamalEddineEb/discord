@@ -133,7 +133,7 @@ async def on_message(new_msg):
                 json={
                     "model": model,
                     "messages": messages,
-                    "max_tokens": cfg.get("max_tokens", 4000),
+                    "max_tokens": cfg.get("max_tokens", 8000),
                     "temperature": cfg.get("temperature", 0.7),
                 },
             )
@@ -144,12 +144,14 @@ async def on_message(new_msg):
         reply_content = data["choices"][0]["message"]["content"]
         reply_content = remove_thinking_tags(reply_content)
 
+
         # Send response in chunks
         for chunk in [reply_content[i:i+2000] for i in range(0, len(reply_content), 2000)]:
             await new_msg.channel.send(chunk)
 
         # Update and save user memory
         await update_user_memory(user_id, username, user_message)
+        await update_user_memory('you', 'EL METALICO', user_message)
 
     except httpx.HTTPStatusError as e:
         logging.error(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")

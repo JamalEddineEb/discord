@@ -20,7 +20,7 @@ async def fetch_past_vectors(new_message,num_recent=10):
         for user_id, msg_json in rows:
             msg_list = json.loads(msg_json)
             for msg in msg_list:
-                messages.append({"user": user_id, "content": msg})  # Store user info with messages
+                messages.append({"user": user_id, "content": msg})  
 
         if not messages:
             return "friendly", []
@@ -29,6 +29,7 @@ async def fetch_past_vectors(new_message,num_recent=10):
 
         # Encode stored messages into vectors
         stored_vectors = model.encode([msg["content"] for msg in messages])
+        print(msg["content"])
 
         # Reset FAISS index to avoid duplicate data
         index.reset()
